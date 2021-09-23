@@ -18,13 +18,19 @@ public class MainController
     @Autowired  //get the bean called TestRepository    //auto gen'd by spring, used to handle data
     private UserRepository userRepository;
 
-    //
+    //USER
+    //test curl: curl localhost:8080/demo/add -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
     @PostMapping (path = "/add")    //Map *only* POST requests
-    public @ResponseBody String addUser (@RequestParam String name, @RequestParam String email)
+    public @ResponseBody String addUser (@RequestParam String userName, @RequestParam String pw,
+                                         @RequestParam String email, @RequestParam String fullName,
+                                         @RequestParam String address)
     {
         User user = new User();
-        user.setName(name);
-        user.setEmail(email);
+        user.setUserName(userName);
+        user.setUser_pw(pw);
+        user.setUser_email(email);
+        user.setUser_fullName(fullName);
+        user.setUser_address(address);
         userRepository.save(user);
         return "Saved user";
     }

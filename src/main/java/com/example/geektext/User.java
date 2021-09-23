@@ -1,5 +1,7 @@
 package com.example.geektext;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,38 +10,59 @@ import javax.persistence.Id;
 @Entity     //tells hibernate to make a table out of this class
 public class User
 {
+    //VARS
     //this is our key for the entity, i believe, for "main access point" via SQL)
-    @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    private Integer id;
-    private String name;
-    private String email;
+    @Id @GeneratedValue (strategy = GenerationType.AUTO)
+    private Integer userId;
+    private String userName;    //gives an error if using as key/ID
+    private String user_pw;
+    private String user_email;
+    private String user_fullName;
+    private String user_address;
 
     //GETTERS
-    public String getEmail()
+    public Integer getUserId() { return userId; }
+    public String getUserName()
     {
-        return email;
+        return userName;
     }
-    public Integer getId()
+    public String getUser_pw()
     {
-        return id;
+        return user_pw;
     }
-    public String getName()
+    public String getUser_email()
     {
-        return name;
+        return user_email;
+    }
+    public String getUser_fullName()
+    {
+        return user_fullName;
+    }
+    public String getUser_address()
+    {
+        return user_address;
     }
 
     //SETTERS
-    public void setId(Integer id)
+    public void setUserId (Integer userId) { this.userId = userId; }
+    public void setUserName(String userName)
     {
-        this.id = id;
+        this.userName = userName;
     }
-    public void setName(String name)
+    public void setUser_pw(String user_pw)
     {
-        this.name = name;
+        this.user_pw = user_pw;
     }
-    public void setEmail(String email)
+    public void setUser_email(String user_email)
     {
-        this.email = email;
+        this.user_email = user_email;
+    }
+    public void setUser_fullName(String user_fullName)
+    {
+        this.user_fullName = user_fullName;
+    }
+    public void setUser_address(String user_address)
+    {
+        this.user_address = user_address;
     }
 }
