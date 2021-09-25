@@ -1,7 +1,5 @@
 package com.example.geektext;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,10 +13,10 @@ public class User
     @Id @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer userId;
     private String userName;    //gives an error if using as key/ID
-    private String user_pw;
-    private String user_email;
-    private String user_fullName;
-    private String user_address;
+    private String userPw;
+    private String userEmail;
+    private String userFullName;
+    private String userAddress;
 
     //GETTERS
     public Integer getUserId() { return userId; }
@@ -26,21 +24,21 @@ public class User
     {
         return userName;
     }
-    public String getUser_pw()
+    public String getUserPw()
     {
-        return user_pw;
+        return userPw;
     }
-    public String getUser_email()
+    public String getUserEmail()
     {
-        return user_email;
+        return userEmail;
     }
-    public String getUser_fullName()
+    public String getUserFullName()
     {
-        return user_fullName;
+        return userFullName;
     }
-    public String getUser_address()
+    public String getUserAddress()
     {
-        return user_address;
+        return userAddress;
     }
 
     //SETTERS
@@ -49,20 +47,20 @@ public class User
     {
         this.userName = userName;
     }
-    public void setUser_pw(String user_pw)
+    public void setUserPw(String user_pw)
     {
-        this.user_pw = user_pw;
+        this.userPw = user_pw;
     }
-    public void setUser_email(String user_email)
+    public void setUserEmail(String user_email)
     {
-        this.user_email = user_email;
+        this.userEmail = user_email;
     }
-    public void setUser_fullName(String user_fullName)
+    public void setUserFullName(String user_fullName)
     {
-        this.user_fullName = user_fullName;
+        this.userFullName = user_fullName;
     }
-    public void setUser_address(String user_address)
+    public void setUserAddress(String user_address)
     {
-        this.user_address = user_address;
+        this.userAddress = user_address;
     }
 }

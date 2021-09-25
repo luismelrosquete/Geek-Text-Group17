@@ -20,23 +20,23 @@ public class MainController
 
     //USER
     //test curl: curl localhost:8080/demo/add -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
-    @PostMapping (path = "/add")    //Map *only* POST requests
+    @PostMapping (path = "/user/add")    //Map *only* POST requests
     public @ResponseBody String addUser (@RequestParam String userName, @RequestParam String pw,
                                          @RequestParam String email, @RequestParam String fullName,
                                          @RequestParam String address)
     {
         User user = new User();
         user.setUserName(userName);
-        user.setUser_pw(pw);
-        user.setUser_email(email);
-        user.setUser_fullName(fullName);
-        user.setUser_address(address);
+        user.setUserPw(pw);
+        user.setUserEmail(email);
+        user.setUserFullName(fullName);
+        user.setUserAddress(address);
         userRepository.save(user);
         return "Saved user";
     }
 
-    @GetMapping (path = "/all")
-    public @ResponseBody Iterable<User> getAllTestEntities ()
+    @GetMapping (path = "/user/all")
+    public @ResponseBody Iterable<User> getAllUsers ()
     {
         //returns a JSON or XML with the users
         return userRepository.findAll();
