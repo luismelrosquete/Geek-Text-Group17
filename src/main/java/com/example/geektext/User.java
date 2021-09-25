@@ -10,16 +10,14 @@ public class User
 {
     //VARS
     //this is our key for the entity, i believe, for "main access point" via SQL)
-    @Id @GeneratedValue (strategy = GenerationType.AUTO)
-    private Integer userId;
-    private String userName;    //gives an error if using as key/ID
+    @Id
+    private String userName;    //changed user key to string in userrepository. id no longer necessary
     private String userPw;
     private String userEmail;
     private String userFullName;
     private String userAddress;
 
     //GETTERS
-    public Integer getUserId() { return userId; }
     public String getUserName()
     {
         return userName;
@@ -42,7 +40,6 @@ public class User
     }
 
     //SETTERS
-    public void setUserId (Integer userId) { this.userId = userId; }
     public void setUserName(String userName)
     {
         this.userName = userName;
