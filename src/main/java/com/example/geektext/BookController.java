@@ -12,7 +12,7 @@ public class BookController
     @Autowired
     private BookRepository bookRepository;
 
-    //curl test //curl localhost:8080/book/add -d name=book1 -d genre=genre1
+    //curl test //curl localhost:8080/book/add -d name=book4 -d genre=genre2 -d price=15
     @PostMapping(path = "/add")    //Map *only* POST requests
     public @ResponseBody
     String addBook (@RequestParam String name, @RequestParam String genre,

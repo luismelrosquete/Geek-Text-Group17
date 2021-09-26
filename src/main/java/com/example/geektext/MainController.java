@@ -19,7 +19,7 @@ public class MainController
     private UserRepository userRepository;
 
     //USER
-    //test curl: curl localhost:8080/demo/add -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
+    //test curl: curl localhost:8080/demo/user/add -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
     @PostMapping (path = "/user/add")    //Map *only* POST requests
     public @ResponseBody String addUser (@RequestParam String userName, @RequestParam String pw,
                                          @RequestParam String email, @RequestParam String fullName,
@@ -35,6 +35,7 @@ public class MainController
         return "Saved user";
     }
 
+    //curl test //curl localhost:8080/demo/user/all
     @GetMapping (path = "/user/all")
     public @ResponseBody Iterable<User> getAllUsers ()
     {
