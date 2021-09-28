@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller //class is a controller (MVC)
@@ -18,8 +17,9 @@ public class UserController
     private UserRepository userRepository;
 
     //test curl: curl localhost:8080/user/add -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
+    //make sure to test removing optional parameters as well
     //Feature: Must be able to create a User with username(email), password and optional fields  (name, email address, home address)
-    @PostMapping (path = "/add")    //Map *only* POST requests
+    @PostMapping (path = "/addUser")    //Map *only* POST requests
     public @ResponseBody String addUser (@RequestParam String userName, @RequestParam String pw,
                                          @RequestParam(required = false) String email, @RequestParam(required = false) String fullName,
                                          @RequestParam(required = false) String address)
@@ -39,7 +39,7 @@ public class UserController
 
     //test curl: curl localhost:8080/user/add -d userName=testUserName -d fullName = NewName
     //Feature: Must be able to update the user and any of their fields except for mail
-    @PutMapping(path = "/update")
+    @PutMapping(path = "/updateUser")
     public @ResponseBody String updateUser (@RequestParam String userName, @RequestParam(required = false) String pw,
                                             @RequestParam(required = false) String fullName, @RequestParam(required = false) String address)
     {
@@ -56,14 +56,14 @@ public class UserController
 
     //test curl: curl localhost:8080/user/add -d userName=testUserName
     //Feature: Must be able to retrieve a User Object and its fields by their username
-    @GetMapping (path = "/find")
-    public @ResponseBody String getUser (@RequestParam String userName)
+    @GetMapping (path = "/findUser")
+    public @ResponseBody User getUser (@RequestParam String userName)
     {
         List<User> users = userRepository.findByuserName(userName);
-        return Arrays.toString(users.toArray());  //should theoretically return only one user
+        return users.get(0); //should theoretically only be one user with that username
     }
 
-    @GetMapping (path = "/all")
+    @GetMapping (path = "/allUsers")
     public @ResponseBody Iterable<User> getAllUsers ()
     {
         //returns a JSON or XML with the users
