@@ -1,6 +1,8 @@
 package com.example.geektext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,31 +41,45 @@ public class UserController
 
     //test curl: curl localhost:8080/user/add -d userName=testUserName -d fullName = NewName
     //Feature: Must be able to update the user and any of their fields except for mail
-    @PutMapping(path = "/updateUser")
+    @RequestMapping(path = "/updateUser")
     public @ResponseBody String updateUser (@RequestParam String userName, @RequestParam(required = false) String pw,
                                             @RequestParam(required = false) String fullName, @RequestParam(required = false) String address)
     {
         List<User> users = userRepository.findByuserName(userName);
         User user = users.get(0); //there should only be 1 instance of that username existing, hence index 0
+        //if (user != null)
+            //System.out.println("user not null");
+
+        //null checking
+        if (user == null)
+            return "No user found with userName: \""+userName+"\"";
+
+        //change vars of user obj
         if(pw != null) //need to check which optional value is to be updated
             user.setUserEmail(pw);
         if(fullName != null)
             user.setUserFullName(fullName);
         if(address != null)
             user.setUserAddress(address);
+        //save the updated user:
+        userRepository.save (user);
+        //output msg
         return "Updated user";
     }
 
     //test curl: curl localhost:8080/user/add -d userName=testUserName
     //Feature: Must be able to retrieve a User Object and its fields by their username
-    @GetMapping (path = "/findUser")
-    public @ResponseBody User getUser (@RequestParam String userName)
+    //@GetMapping (path = "/findUser")
+    @RequestMapping(path = "/findUser")
+    public ResponseEntity<User> getUserTest (@RequestParam String userName)
     {
         List<User> users = userRepository.findByuserName(userName);
-        return users.get(0); //should theoretically only be one user with that username
+        if (users.stream().count() > 0)
+            return new ResponseEntity<>(users.get(0), HttpStatus.OK); //should theoretically only be one user with that username
+        return null;
     }
 
-    @GetMapping (path = "/allUsers")
+    @RequestMapping (path = "/allUsers")
     public @ResponseBody Iterable<User> getAllUsers ()
     {
         //returns a JSON or XML with the users
