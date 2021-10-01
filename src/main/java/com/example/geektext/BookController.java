@@ -12,8 +12,8 @@ public class BookController
     @Autowired
     private BookRepository bookRepository;
 
-    //curl test //curl localhost:8080/book/add -d name=book4 -d genre=genre2 -d price=15
-    @PostMapping(path = "/add")    //Map *only* POST requests
+    //curl test //curl localhost:8080/book/addBook -d name=book4 -d genre=genre2 -d price=15
+    @PostMapping(path = "/addBook")    //Map *only* POST requests
     public @ResponseBody
     String addBook (@RequestParam String bookIsbn, @RequestParam String name, @RequestParam String description, @RequestParam String publisher, @RequestParam String genre,
                     @RequestParam Integer yearPublished, @RequestParam Integer copiesSold, @RequestParam Integer price)
@@ -31,8 +31,8 @@ public class BookController
         return "Saved book";
     }
 
-    //curl test  //curl localhost:8080/book/findbygenre -d genre=genre1
-    @PostMapping (path = "/findbygenre")
+    //curl test  //curl localhost:8080/book/findByGenre -d genre=genre1
+    @PostMapping (path = "/findByGenre")
     public @ResponseBody String book_findbygenre (@RequestParam String genre)
     {
         List<Book> books = bookRepository.findBybookGenre (genre);
@@ -56,8 +56,10 @@ public class BookController
             out += books.get(i).toString() + ((i+1 != books.stream().count()) ? " | " : "");
         return out;
     }
-    //curl test //curl localhost:8080/book/all
-    @GetMapping(path = "/all")
+  
+    //curl test //curl localhost:8080/book/allBooks
+    @GetMapping(path = "/allBooks")
+
     public @ResponseBody Iterable<Book> getAllBooks ()
     {
         return bookRepository.findAll();
