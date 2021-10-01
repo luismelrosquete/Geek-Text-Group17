@@ -101,10 +101,10 @@ public class Book
         this.bookPrice = book_price;
     }
 
-    //testing
+    // use this method to print the book information based on the book's ISBN. 
     @Override
     public String toString()
     {
-        return new String ("Book name: "+this.bookName + ", genre: "+this.bookGenre);
+        return new String ("ISBN: "+this.bookIsbn + ", Name: "+this.bookName + ", Description: "+this.bookDescription + ", Publisher: " + this.bookPublisher + ", Genre: " + this.bookGenre + ", Year Published: " + this.bookYearPublished + ", Copies Sold: " + this.bookCopiesSold + ", Price: " + this.bookPrice);
     }
 }
