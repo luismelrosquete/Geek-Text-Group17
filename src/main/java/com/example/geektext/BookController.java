@@ -15,12 +15,17 @@ public class BookController
     //curl test //curl localhost:8080/book/add -d name=book4 -d genre=genre2 -d price=15
     @PostMapping(path = "/add")    //Map *only* POST requests
     public @ResponseBody
-    String addBook (@RequestParam String name, @RequestParam String genre,
-                    @RequestParam Integer price)
-    {
-        Book book = new Book();
+    String addBook (@RequestParam String bookIsbn, @RequestParam String name, @RequestParam String description, @RequestParam String publisher, @RequestParam String genre,
+                    @RequestParam Integer yearPublished, @RequestParam Integer copiesSold, @RequestParam Integer price)
+    { // save all of the book's information
+        Book book = new Book(); 
+        book.setBookIsbn(bookIsbn);
         book.setBookName(name);
+        book.setBookDescription(description);
+        book.setBookPublisher(publisher);
         book.setBook_genre(genre);
+        book.setBookYearPublished(yearPublished);
+        book.setBookCopiesSold(copiesSold);
         book.setBookPrice(price);
         bookRepository.save(book);
         return "Saved book";
@@ -39,6 +44,18 @@ public class BookController
         return out;
     }
 
+    //curl test  //curl localhost:8080/book/findbyisbn -d isbn=4987
+    @PostMapping (path = "/findbyisbn")
+    public @ResponseBody String book_findbyisbn (@RequestParam String isbn)
+    {
+        List<Book> books = bookRepository.findBybookIsbn (isbn);
+
+        //testing output
+        String out = "";
+        for (int i = 0; i < books.stream().count(); i++)
+            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? " | " : "");
+        return out;
+    }
     //curl test //curl localhost:8080/book/all
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Book> getAllBooks ()
