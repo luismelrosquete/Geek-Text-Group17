@@ -12,7 +12,7 @@ public class BookController
     @Autowired
     private BookRepository bookRepository;
 
-    //curl test //curl localhost:8080/book/addBook -d name=book4 -d genre=genre2 -d price=15
+    //curl test //curl localhost:8080/book/addBook -d bookIsbn=5780 -d name=Book2 -d description=ExampleOne -d publisher=BooksX -d genre=Genre2 -d yearPublished=2017 -d copiesSold=2500 -d price=9
     @PostMapping(path = "/addBook")    //Map *only* POST requests
     public @ResponseBody
     String addBook (@RequestParam String bookIsbn, @RequestParam String name, @RequestParam String description, @RequestParam String publisher, @RequestParam String genre,
@@ -37,10 +37,14 @@ public class BookController
     {
         List<Book> books = bookRepository.findBybookGenre (genre);
 
+        //none found
+        if (books.stream().count() == 0)
+            return "No books found with genre: \""+genre+"\"";
+
         //testing output
         String out = "";
         for (int i = 0; i < books.stream().count(); i++)
-            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? " | " : "");
+            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? " \n" : "");
         return out;
     }
 
@@ -50,10 +54,14 @@ public class BookController
     {
         List<Book> books = bookRepository.findBybookIsbn (isbn);
 
+        //none found
+        if (books.stream().count() == 0)
+            return "No books found with ISBN: \""+isbn+"\"";
+
         //testing output
         String out = "";
         for (int i = 0; i < books.stream().count(); i++)
-            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? " | " : "");
+            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? " \n" : "");
         return out;
     }
   
