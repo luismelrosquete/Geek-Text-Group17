@@ -5,6 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.example.geektext.BookController;
 import com.example.geektext.Book;
+import com.example.geektext.BookRepository;
+
+import java.util.List;
+import java.util.Arrays;
 
 @Controller //class is a controller (MVC)
 @RequestMapping (path = "/cart")    //URL's start with "/user" after application path
@@ -12,16 +16,15 @@ public class CartController {
 
     @Autowired  //get the bean called TestRepository    //auto gen'd by spring, used to handle data
     private CartRepository CartRepository;
+    private BookRepository bookRepository;
 
     //Feature: Must be able to create a shopping cart instance for a user. Shopping cart must belong to a user.
     //test curl: curl localhost:8080/cart/newCart -d quantity=1
     @PostMapping (path = "/newCart")    //Map *only* POST requests
     public @ResponseBody String newCart ()
     {
-        /*
-        adding a quantity param to cart isnt really making much sense to me so it might be something I
-        end up removing and just having the cart class take vars primarily from book and maybe user
-        */
+        //adding a quantity param to cart isnt really making much sense to me so it might be something I
+        //end up removing and just having the cart class take vars primarily from book and maybe user
         Cart cart = new Cart();
         cart.setQuantity(0);
         CartRepository.save(cart);
@@ -30,9 +33,15 @@ public class CartController {
 
 
     //Feature: Must be able to update the shopping cart with a book.
+    //test curl: curl localhost:8080/cart/updateCart -d quantity=1
     @PostMapping (path = "/updateCart")    //Map *only* POST requests
-    public @ResponseBody String updateCart (@RequestParam String CartId, @RequestParam String bookId, @RequestParam Integer quantity)
+    public @ResponseBody String updateCart (@RequestParam Long cartId, @RequestParam String bookIsbn, @RequestParam Integer quantity)
     {
+        List<Cart> carts = CartRepository.findBycartId(cartId);
+        List<Book> books = bookRepository.findBybookIsbn(bookIsbn);
+        Cart cart = carts.get(0);
+        Book book = books.get(0);
+        cart.setQuantity(cart.getQuantity()+1);
         return "Cart has been updated";
     }
 
@@ -43,7 +52,7 @@ public class CartController {
     public @ResponseBody String retrieveCart (@RequestParam String bookName, @RequestParam Integer quantity,
                                               @RequestParam(required = false) Double price)
     {
-        //making sure a book is in
+        //if there are no books, the list wont be displayed and instead show the message below
         if(quantity <= 0) return "There are no books in your shopping cart";
         return "List of Books: " +bookName; //planning on adding an array that can
     }
