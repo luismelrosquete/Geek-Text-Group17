@@ -62,5 +62,4 @@ public class User
     {
         this.userAddress = user_address;
     }
-    public void addCreditCard(CreditCard creditCard) { this.creditCards.add(creditCard); }
 }

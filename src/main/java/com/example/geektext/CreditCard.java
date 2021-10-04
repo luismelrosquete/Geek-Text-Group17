@@ -55,4 +55,11 @@ public class CreditCard {
     {
         this.cardExpiryYear = cardExpiryYear;
     }
+
+    @Override
+    public String toString(){
+        return new String ("Card Number: " + this.cardNumber + ", Security Pin: " +
+                this.cardSecurityPin + ", Expiry Month: " + this.cardExpiryMonth + ", Expiry Year: " +
+                this.cardExpiryYear);
+    }
 }
