@@ -11,4 +11,7 @@ public interface BookRepository extends CrudRepository <Book, String>
 
     // finding book by ISBN
     List<Book> findBybookIsbn (String bookIsbn);
+
+    //finding top sellers (top 10 books that have most copies sold)
+    List<Book> findTop10ByOrderByBookCopiesSoldDesc ();
 }

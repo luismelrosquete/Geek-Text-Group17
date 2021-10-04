@@ -66,6 +66,20 @@ public class BookController
             out += books.get(i).toString() + ((i+1 != books.stream().count()) ? "\n" : "");
         return out;
     }
+
+    //curl test  //curl localhost:8080/book/findTop10Sold
+    @RequestMapping (path = "/findTop10Sold")
+    public @ResponseBody String book_findTop10byCopiesSold ()
+    {
+        List<Book> books = bookRepository.findTop10ByOrderByBookCopiesSoldDesc();
+        //System.out.println("Book count: "+books.stream().count());
+
+        //testing output
+        String out = "";
+        for (int i = 0; i < books.stream().count(); i++)
+            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? "\n" : "");
+        return out;
+    }
   
     //curl test //curl localhost:8080/book/allBooks
     @GetMapping(path = "/allBooks")
