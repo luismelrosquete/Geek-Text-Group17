@@ -71,7 +71,7 @@ public class UserController
     //test curl: curl localhost:8080/user/add -d userName=testUserName
     //Feature: Must be able to retrieve a User Object and its fields by their username
     //@GetMapping (path = "/findUser")
-    @GetMapping(path = "/findUser")
+    @RequestMapping(path = "/findUser")
     public ResponseEntity<User> getUser (@RequestParam String userName)
     {
         List<User> users = userRepository.findByuserName(userName);
@@ -80,7 +80,7 @@ public class UserController
         return null;
     }
 
-    //test curl: curl localhost:8080/user/addCreditCard -d userName=testUserName -d cardNumber=1234567890123456 -d cardSecurityPin=123 -d cardExpiryMonth=10 -d cardExpiryYear=21
+    //test curl: curl localhost:8080/user/addCreditCard -d userName=testUserName -d cardNumber=0987654321211234 -d cardSecurityPin=123 -d cardExpiryMonth=10 -d cardExpiryYear=21
     @RequestMapping(path = "/addCreditCard")
     public @ResponseBody String addCreditCard(@RequestParam String userName, @RequestParam String cardNumber,
                                               @RequestParam int cardSecurityPin, @RequestParam int cardExpiryMonth,
