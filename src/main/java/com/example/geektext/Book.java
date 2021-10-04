@@ -7,11 +7,10 @@ public class Book
 {
     //VARS
     //this is our key for the entity, i believe, for "main access point" via SQL)
-    @Id @GeneratedValue (strategy = GenerationType.AUTO)
-    private Integer bookId;
+    @Id // @GeneratedValue (strategy = GenerationType.AUTO)
+    private String bookIsbn;
 
     //VARS
-    private String bookIsbn;
     private String bookName;
     private String bookDescription;
     private String bookPublisher;
@@ -26,10 +25,6 @@ public class Book
     //private List<Author> book_author;         //needs to reference author obj/key.
 
     //GETTERS
-    public Integer getBookId()
-    {
-        return bookId;
-    }
     public String getBookIsbn()
     {
         return bookIsbn;
@@ -64,10 +59,6 @@ public class Book
     }
 
     //SETTERS
-    public void setBookId(Integer bookId)
-    {
-        this.bookId = bookId;
-    }
     public void setBookIsbn(String book_isbn)
     {
         this.bookIsbn = book_isbn;
