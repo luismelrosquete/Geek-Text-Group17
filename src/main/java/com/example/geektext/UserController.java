@@ -47,8 +47,6 @@ public class UserController
     {
         List<User> users = userRepository.findByuserName(userName);
         User user = users.get(0); //there should only be 1 instance of that username existing, hence index 0
-        //if (user != null)
-            //System.out.println("user not null");
 
         //null checking
         if (user == null)
@@ -61,6 +59,7 @@ public class UserController
             user.setUserFullName(fullName);
         if(address != null)
             user.setUserAddress(address);
+
         //save the updated user:
         userRepository.save (user);
         //output msg
