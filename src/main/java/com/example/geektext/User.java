@@ -1,9 +1,9 @@
 package com.example.geektext;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity     //tells hibernate to make a table out of this class
 public class User
@@ -16,6 +16,10 @@ public class User
     private String userEmail;
     private String userFullName;
     private String userAddress;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<CreditCard> creditCards;
 
     //GETTERS
     public String getUserName()
@@ -38,6 +42,7 @@ public class User
     {
         return userAddress;
     }
+    public List<CreditCard> getCreditCards() { return creditCards; }
 
     //SETTERS
     public void setUserName(String userName)
@@ -52,10 +57,7 @@ public class User
     {
         this.userEmail = user_email;
     }
-    public void setUserFullName(String user_fullName)
-    {
-        this.userFullName = user_fullName;
-    }
+    public void setUserFullName(String user_fullName) { this.userFullName = user_fullName; }
     public void setUserAddress(String user_address)
     {
         this.userAddress = user_address;

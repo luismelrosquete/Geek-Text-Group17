@@ -17,8 +17,10 @@ public class UserController
 
     @Autowired  //get the bean called TestRepository    //auto gen'd by spring, used to handle data
     private UserRepository userRepository;
+    @Autowired
+    private CreditCardRepository creditCardRepository;
 
-    //test curl: curl localhost:8080/user/add -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
+    //test curl: curl localhost:8080/user/addUser -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
     //make sure to test removing optional parameters as well
     //Feature: Must be able to create a User with username(email), password and optional fields  (name, email address, home address)
     @PostMapping (path = "/addUser")    //Map *only* POST requests
@@ -39,7 +41,7 @@ public class UserController
         return "Saved user";
     }
 
-    //test curl: curl localhost:8080/user/add -d userName=testUserName -d fullName = NewName
+    //test curl: curl localhost:8080/user/updateUser -d userName=testUserName -d fullName = NewName
     //Feature: Must be able to update the user and any of their fields except for mail
     @RequestMapping(path = "/updateUser")
     public @ResponseBody String updateUser (@RequestParam String userName, @RequestParam(required = false) String pw,
@@ -70,7 +72,7 @@ public class UserController
     //Feature: Must be able to retrieve a User Object and its fields by their username
     //@GetMapping (path = "/findUser")
     @RequestMapping(path = "/findUser")
-    public ResponseEntity<User> getUserTest (@RequestParam String userName)
+    public ResponseEntity<User> getUser (@RequestParam String userName)
     {
         List<User> users = userRepository.findByuserName(userName);
         if (users.stream().count() > 0)
@@ -78,7 +80,36 @@ public class UserController
         return null;
     }
 
-    @RequestMapping (path = "/allUsers")
+    //test curl: curl localhost:8080/user/addCreditCard -d userName=testUserName -d cardNumber=0987654321211234 -d cardSecurityPin=123 -d cardExpiryMonth=10 -d cardExpiryYear=21
+    @RequestMapping(path = "/addCreditCard")
+    public @ResponseBody String addCreditCard(@RequestParam String userName, @RequestParam String cardNumber,
+                                              @RequestParam int cardSecurityPin, @RequestParam int cardExpiryMonth,
+                                              @RequestParam int cardExpiryYear){
+        User user = userRepository.findByuserName(userName).get(0);
+        if(user == null)
+            return "Error: User does not exist.";
+        CreditCard card = new CreditCard();
+        card.setCardNumber(cardNumber);
+        card.setCardSecurityPin(cardSecurityPin);
+        card.setCardExpiryMonth(cardExpiryMonth);
+        card.setCardExpiryYear(cardExpiryYear);
+        card.setUser(user);
+        creditCardRepository.save(card);
+        return "Saved Credit Card.";
+    }
+
+    //test curl: curl localhost:8080/user/getCreditCards -d userName=testUserName
+    @RequestMapping(path = "/getCreditCards")
+    public @ResponseBody String getCreditCards (@RequestParam String userName){
+        User user = userRepository.findByuserName(userName).get(0);
+        List<CreditCard> cards = user.getCreditCards();
+        String out = "";
+        for (int i = 0; i < cards.stream().count(); i++)
+            out += cards.get(i).toString() + ((i+1 != cards.stream().count()) ? "\n" : "");
+        return out;
+    }
+
+    @GetMapping (path = "/allUsers")
     public @ResponseBody Iterable<User> getAllUsers ()
     {
         //returns a JSON or XML with the users
