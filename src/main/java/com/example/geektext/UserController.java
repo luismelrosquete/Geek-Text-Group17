@@ -82,7 +82,6 @@ public class UserController
         return null;
     }
 
-
     //Feature: Must be able to create a shopping cart instance for a user. Shopping cart must belong to a user.
     //test curl: curl localhost:8080/user/newCart -d userName=testUserName
     @RequestMapping (path = "/newCart")    //Map *only* POST requests
