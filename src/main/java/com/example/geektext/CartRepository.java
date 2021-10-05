@@ -6,7 +6,7 @@ import java.util.List;
 
 //AUTO IMPLEMENTED by spring into a bean called Repository
 //CRUD refers to Create, Read, Update, Delete
-public interface CartRepository extends CrudRepository<Cart, Long>
+public interface CartRepository extends CrudRepository<Cart, String>
 {
-    List<Cart> findBycartId (Long cartId);
+    List<Cart> findBycartId (String cartId);
 }

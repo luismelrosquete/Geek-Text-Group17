@@ -1,5 +1,7 @@
 package com.example.geektext;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,6 +20,11 @@ public class Book
     private Integer bookYearPublished;
     private Integer bookCopiesSold;
     private Integer bookPrice;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cartId", nullable = false)
+    @JsonBackReference
+    private Cart cart;
 
     //TODO: many-to-many relationship between author and book
     //ENTITY relations
@@ -56,6 +63,10 @@ public class Book
     public Integer getBookPrice()
     {
         return bookPrice;
+    }
+    public Cart cart()
+    {
+        return cart;
     }
 
     //SETTERS

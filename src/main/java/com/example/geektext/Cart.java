@@ -1,5 +1,7 @@
 package com.example.geektext;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
 public class Cart {
     //VARS
     @Id @GeneratedValue (strategy = GenerationType.AUTO)
-    private Long cartId;
+    private String cartId;
 
     //VARS
     /*
@@ -15,13 +17,14 @@ public class Cart {
     much need for anything other variables to be added unless I'm forgetting something?
     */
     private Integer quantity;
-    @OneToMany(targetEntity = Book.class,cascade = CascadeType.ALL)
-    @JoinColumn(name = "cb_fk", referencedColumnName = "cartId")
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Book> books;
 
     //GETTERS
-    public Long getId() { return cartId; }
+    public String getId() { return cartId; }
     public Integer getQuantity() { return quantity; }
+    public List<Book> getBooks() { return books; }
 
 
     //SETTERS

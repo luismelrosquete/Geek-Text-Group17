@@ -17,6 +17,7 @@ public class UserController
 
     @Autowired  //get the bean called TestRepository    //auto gen'd by spring, used to handle data
     private UserRepository userRepository;
+    private CartRepository CartRepository;
 
     //test curl: curl localhost:8080/user/add -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
     //make sure to test removing optional parameters as well
@@ -76,6 +77,21 @@ public class UserController
         if (users.stream().count() > 0)
             return new ResponseEntity<>(users.get(0), HttpStatus.OK); //should theoretically only be one user with that username
         return null;
+    }
+
+    //Feature: Must be able to create a shopping cart instance for a user. Shopping cart must belong to a user.
+    //test curl: curl localhost:8080/user/newCart -d userName=testUserName
+    @RequestMapping (path = "/newCart")    //Map *only* POST requests
+    public @ResponseBody String newCart(@RequestParam String userName)
+    {
+        //adding a quantity param to cart isnt really making much sense to me so it might be something I
+        //end up removing and just having the cart class take vars primarily from book and maybe user
+        User user = userRepository.findByuserName(userName).get(0);
+        if(user == null) return "Error, does not exist";
+        Cart cart = new Cart();
+        cart.setQuantity(0);
+        CartRepository.save(cart);
+        return "cart added";
     }
 
     @RequestMapping (path = "/allUsers")
