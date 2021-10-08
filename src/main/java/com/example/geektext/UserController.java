@@ -18,7 +18,7 @@ public class UserController
     @Autowired  //get the bean called TestRepository    //auto gen'd by spring, used to handle data
     private UserRepository userRepository;
     @Autowired
-    private CartRepository CartRepository;
+    private CartRepository cartRepository;
     @Autowired
     private CreditCardRepository creditCardRepository;
 
@@ -39,7 +39,11 @@ public class UserController
             user.setUserFullName(fullName);
         if(address != null)
             user.setUserAddress(address);
+        Cart cart = new Cart();
+        user.setCart(cart);
+        cart.setUser(user);
         userRepository.save(user);
+        cartRepository.save(cart);
         return "Saved user";
     }
 
@@ -82,20 +86,6 @@ public class UserController
         return null;
     }
 
-    //Feature: Must be able to create a shopping cart instance for a user. Shopping cart must belong to a user.
-    //test curl: curl localhost:8080/user/newCart -d userName=testUserName
-    @RequestMapping (path = "/newCart")    //Map *only* POST requests
-    public @ResponseBody String newCart(@RequestParam String userName)
-    {
-        //adding a quantity param to cart isnt really making much sense to me so it might be something I
-        //end up removing and just having the cart class take vars primarily from book and maybe user
-        User user = userRepository.findByuserName(userName).get(0);
-        if(user == null) return "Error, does not exist";
-        Cart cart = new Cart();
-        cart.setQuantity(0);
-        CartRepository.save(cart);
-        return "cart added";
-    }
 
     //test curl: curl localhost:8080/user/addCreditCard -d userName=testUserName -d cardNumber=0987654321211234 -d cardSecurityPin=123 -d cardExpiryMonth=10 -d cardExpiryYear=21
     @RequestMapping(path = "/addCreditCard")

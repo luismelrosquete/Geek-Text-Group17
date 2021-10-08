@@ -21,45 +21,24 @@ public class User
     @JsonManagedReference
     private List<CreditCard> creditCards;
 
+    @OneToOne (cascade = CascadeType.ALL)
+    @JoinColumn (name = "cartId", referencedColumnName = "cartId")
+    private Cart cart;
+
     //GETTERS
-    public String getUserName()
-    {
-        return userName;
-    }
-    public String getUserPw()
-    {
-        return userPw;
-    }
-    public String getUserEmail()
-    {
-        return userEmail;
-    }
-    public String getUserFullName()
-    {
-        return userFullName;
-    }
-    public String getUserAddress()
-    {
-        return userAddress;
-    }
+    public String getUserName() { return userName; }
+    public String getUserPw() { return userPw; }
+    public String getUserEmail() { return userEmail; }
+    public String getUserFullName() { return userFullName; }
+    public String getUserAddress() { return userAddress; }
     public List<CreditCard> getCreditCards() { return creditCards; }
+    public Cart getCart() { return cart; }
 
     //SETTERS
-    public void setUserName(String userName)
-    {
-        this.userName = userName;
-    }
-    public void setUserPw(String user_pw)
-    {
-        this.userPw = user_pw;
-    }
-    public void setUserEmail(String user_email)
-    {
-        this.userEmail = user_email;
-    }
+    public void setUserName(String userName) { this.userName = userName; }
+    public void setUserPw(String user_pw) { this.userPw = user_pw; }
+    public void setUserEmail(String user_email) { this.userEmail = user_email; }
     public void setUserFullName(String user_fullName) { this.userFullName = user_fullName; }
-    public void setUserAddress(String user_address)
-    {
-        this.userAddress = user_address;
-    }
+    public void setUserAddress(String user_address) { this.userAddress = user_address; }
+    public void setCart(Cart cart) { this.cart = cart; }
 }

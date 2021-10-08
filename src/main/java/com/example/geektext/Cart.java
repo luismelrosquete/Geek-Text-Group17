@@ -1,6 +1,7 @@
 package com.example.geektext;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,12 +22,16 @@ public class Cart {
     @JsonManagedReference
     private List<Book> books;
 
+    @OneToOne  (mappedBy = "cart")
+    private User user;
+
     //GETTERS
     public String getId() { return cartId; }
     public Integer getQuantity() { return quantity; }
     public List<Book> getBooks() { return books; }
-
+    public User getUser() { return user; }
 
     //SETTERS
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
+    public void setUser(User user) { this.user = user; }
 }
