@@ -12,11 +12,14 @@ public class CartController {
 
     @Autowired  //get the bean called TestRepository    //auto gen'd by spring, used to handle data
     private CartRepository cartRepository;
+    @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     //Feature: Must be able to update the shopping cart with a book.
     //test curl: curl localhost:8080/cart/updateCart -d quantity=1
-    @PostMapping (path = "/updateCart")    //Map *only* POST requests
+    @RequestMapping (path = "/updateCart")    //Map *only* POST requests
     public @ResponseBody String updateCart (@RequestParam Long cartId, @RequestParam String bookIsbn, @RequestParam Integer quantity)
     {
         List<Cart> carts = cartRepository.findBycartId(cartId);
@@ -29,16 +32,20 @@ public class CartController {
 
 
     //Feature: Must be able to retrieve the list of book(s) in the shopping cart.
-    //test curl: curl localhost:8080/cart/retrieveCart -d cartId=25
+    //test curl: curl localhost:8080/cart/retrieveCart -d userName=testUserName
     @RequestMapping (path = "/retrieveCart")    //Map *only* POST requests
-    public @ResponseBody String retrieveCart (@RequestParam Long cartId)
+    public @ResponseBody String retrieveCart (@RequestParam String userName)
     {
-        Cart cart = cartRepository.findBycartId(cartId).get(0);
-        List<Book> books = cart.getBooks();
-        String out = "";
-        for (int i = 0; i < books.stream().count(); i++)
-            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? "\n" : "");
-        return out;
+        List<User> users = userRepository.findByuserName(userName);
+        if(users.isEmpty()) return "Username does not exist.";
+        else {
+            Cart cart = users.get(0).getCart();
+            List<Book> books = cart.getBooks();
+            String out = "";
+            for (int i = 0; i < books.stream().count(); i++)
+                out += books.get(i).toString() + ((i + 1 != books.stream().count()) ? "\n" : "");
+            return out;
+        }
     }
 
 
