@@ -10,7 +10,7 @@ import java.util.List;
 public class Cart {
     //VARS
     @Id @GeneratedValue (strategy = GenerationType.AUTO)
-    private String cartId;
+    private Long cartId;
 
     //VARS
     /*
@@ -26,7 +26,7 @@ public class Cart {
     private User user;
 
     //GETTERS
-    public String getId() { return cartId; }
+    public Long getId() { return cartId; }
     public Integer getQuantity() { return quantity; }
     public List<Book> getBooks() { return books; }
     public User getUser() { return user; }
