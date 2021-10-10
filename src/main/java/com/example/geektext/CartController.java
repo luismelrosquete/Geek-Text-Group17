@@ -17,21 +17,6 @@ public class CartController {
     @Autowired
     private UserRepository userRepository;
 
-    /* Temporarily commented out
-    //Feature: Must be able to update the shopping cart with a book.
-    //test curl: curl localhost:8080/cart/updateCart -d quantity=1
-    @RequestMapping (path = "/updateCart")    //Map *only* POST requests
-    public @ResponseBody String updateCart (@RequestParam Long cartId, @RequestParam String bookIsbn, @RequestParam Integer quantity)
-    {
-        List<Cart> carts = cartRepository.findBycartId(cartId);
-        List<Book> books = bookRepository.findBybookIsbn(bookIsbn);
-        Cart cart = carts.get(0);
-        Book book = books.get(0);
-        cart.setQuantity(cart.getQuantity()+1);
-        return "Cart has been updated";
-    }
-    */
-
     //Feature: Must be able to update the shopping cart with a book.
     //test curl: curl localhost:8080/cart/updateCart -d userName=testUserName -d bookIsbn=5780
     @RequestMapping (path = "/updateCart")    //Map *only* POST requests
@@ -44,7 +29,8 @@ public class CartController {
         else if(books.isEmpty()) return "Book does not exist.";
         else{
             Cart cart = users.get(0).getCart();
-            cart.setQuantity(cart.getQuantity() + 1);
+            //Need code that adds the book into the specific shopping cart here
+            cart.setQuantity(cart.getQuantity() + 1); //adding 1 doesnt seem to increment the amount of books in the cart?
             return "Cart has been updated";
         }
     }
@@ -81,7 +67,8 @@ public class CartController {
             Cart cart = users.get(0).getCart();
             if(cart.getQuantity() <= 0) return "There are no books in your shopping cart";
             else{
-                cart.setQuantity(cart.getQuantity() - 1);
+                cart.setQuantity(cart.getQuantity() - 1); //decrementing the cart doesnt seem to work similarly to updateCart
+                //Need code that will remove the book from the specific shopping cart similar to updateCart here
                 return "Book has been removed";
             }
         }

@@ -17,9 +17,9 @@ public class Cart {
     variables like price, books, etc. are going to be used from other classes, so not
     much need for anything other variables to be added unless I'm forgetting something?
     */
-    private Integer quantity;
-    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    private Integer quantity = 0;
+
+    @ManyToMany
     private List<Book> books;
 
     @OneToOne  (mappedBy = "cart")
