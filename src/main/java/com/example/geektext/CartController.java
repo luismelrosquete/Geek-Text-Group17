@@ -17,6 +17,7 @@ public class CartController {
     @Autowired
     private UserRepository userRepository;
 
+    /* Temporarily commented out
     //Feature: Must be able to update the shopping cart with a book.
     //test curl: curl localhost:8080/cart/updateCart -d quantity=1
     @RequestMapping (path = "/updateCart")    //Map *only* POST requests
@@ -29,7 +30,24 @@ public class CartController {
         cart.setQuantity(cart.getQuantity()+1);
         return "Cart has been updated";
     }
+    */
 
+    //Feature: Must be able to update the shopping cart with a book.
+    //test curl: curl localhost:8080/cart/updateCart -d userName=testUserName -d bookIsbn=5780
+    @RequestMapping (path = "/updateCart")    //Map *only* POST requests
+    public @ResponseBody String updateCart (@RequestParam String userName, @RequestParam String bookIsbn,
+                                            @RequestParam(required = false) String name)
+    {
+        List<User> users = userRepository.findByuserName(userName);
+        List<Book> books = bookRepository.findBybookIsbn(bookIsbn);
+        if(users.isEmpty()) return "Username does not exist.";
+        else if(books.isEmpty()) return "Book does not exist.";
+        else{
+            Cart cart = users.get(0).getCart();
+            cart.setQuantity(cart.getQuantity() + 1);
+            return "Cart has been updated";
+        }
+    }
 
     //Feature: Must be able to retrieve the list of book(s) in the shopping cart.
     //test curl: curl localhost:8080/cart/retrieveCart -d userName=testUserName
@@ -50,12 +68,23 @@ public class CartController {
 
 
     //Feature: Must be able to delete a book from the shopping cart instance for that user.
+    //test curl: curl localhost:8080/cart/deleteBook -d userName=testUserName -d bookIsbn=5780
     @RequestMapping (path = "/deleteBook")    //Map *only* POST requests
-    public @ResponseBody String deleteBook (@RequestParam String bookName, @RequestParam Integer quantity)
+    public @ResponseBody String deleteBook (@RequestParam String userName, @RequestParam String bookIsbn)
     {
+        List<User> users = userRepository.findByuserName(userName);
+        List<Book> books = bookRepository.findBybookIsbn(bookIsbn);
+        if(users.isEmpty()) return "Username does not exist.";
+        else if(books.isEmpty()) return "Book does not exist.";
         //making sure a book is in the cart before removing
-        if(quantity <= 0) return "There are no books in your shopping cart";
-        return "List of Books: " +bookName;
+        else{
+            Cart cart = users.get(0).getCart();
+            if(cart.getQuantity() <= 0) return "There are no books in your shopping cart";
+            else{
+                cart.setQuantity(cart.getQuantity() - 1);
+                return "Book has been removed";
+            }
+        }
     }
 
     //test curl: curl localhost:8080/cart/allCarts
