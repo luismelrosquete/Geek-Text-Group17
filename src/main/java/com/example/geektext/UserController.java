@@ -1,5 +1,7 @@
 package com.example.geektext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,9 @@ public class UserController
                                          @RequestParam(required = false) String email, @RequestParam(required = false) String fullName,
                                          @RequestParam(required = false) String address)
     {
+        List<User> users = userRepository.findByuserName(userName);
+        if(users.size() != 0){ return "Error: Username already in use"; }
+
         User user = new User();
         user.setUserName(userName);
         user.setUserPw(pw);
@@ -54,11 +59,8 @@ public class UserController
                                             @RequestParam(required = false) String fullName, @RequestParam(required = false) String address)
     {
         List<User> users = userRepository.findByuserName(userName);
-        User user = users.get(0); //there should only be 1 instance of that username existing, hence index 0
-
-        //null checking
-        if (user == null)
-            return "No user found with userName: \""+userName+"\"";
+        if(users.size() == 0){ return "Error: User does not exist"; }
+        User user = users.get(0);
 
         //change vars of user obj
         if(pw != null) //need to check which optional value is to be updated
@@ -74,7 +76,7 @@ public class UserController
         return "Updated user";
     }
 
-    //test curl: curl localhost:8080/user/add -d userName=testUserName
+    //test curl: curl localhost:8080/user/findUser -d userName=testUserName
     //Feature: Must be able to retrieve a User Object and its fields by their username
     //@GetMapping (path = "/findUser")
     @RequestMapping(path = "/findUser")
@@ -92,9 +94,9 @@ public class UserController
     public @ResponseBody String addCreditCard(@RequestParam String userName, @RequestParam String cardNumber,
                                               @RequestParam int cardSecurityPin, @RequestParam int cardExpiryMonth,
                                               @RequestParam int cardExpiryYear){
-        User user = userRepository.findByuserName(userName).get(0);
-        if(user == null)
-            return "Error: User does not exist.";
+        List<User> users = userRepository.findByuserName(userName);
+        if(users.size() == 0){ return "Error: User does not exist"; }
+        User user = users.get(0);
         CreditCard card = new CreditCard();
         card.setCardNumber(cardNumber);
         card.setCardSecurityPin(cardSecurityPin);
@@ -108,14 +110,19 @@ public class UserController
     //test curl: curl localhost:8080/user/getCreditCards -d userName=testUserName
     @RequestMapping(path = "/getCreditCards")
     public @ResponseBody String getCreditCards (@RequestParam String userName){
-        User user = userRepository.findByuserName(userName).get(0);
-        List<CreditCard> cards = user.getCreditCards();
-        String out = "";
-        for (int i = 0; i < cards.stream().count(); i++)
-            out += cards.get(i).toString() + ((i+1 != cards.stream().count()) ? "\n" : "");
-        return out;
+        List<User> users = userRepository.findByuserName(userName);
+        if(users.size() == 0){ return "Error: User does not exist"; }
+        List<CreditCard> cards = users.get(0).getCreditCards();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(cards);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "Failed to return credit cards.";
     }
 
+    //test curl: curl localhost:8080/user/allUsers
     @GetMapping (path = "/allUsers")
     public @ResponseBody Iterable<User> getAllUsers ()
     {
