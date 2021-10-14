@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.util.List;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -56,10 +55,7 @@ public class Book
     {
         return bookDescription;
     }
-    public String getBookPublisher()
-    {
-        return bookPublisher;
-    }
+    public String getBookPublisher() { return bookPublisher; }
     public String getBook_genre ()
     {
         return bookGenre;

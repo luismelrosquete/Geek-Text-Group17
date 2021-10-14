@@ -17,7 +17,7 @@ public class Cart {
     variables like price, books, etc. are going to be used from other classes, so not
     much need for anything other variables to be added unless I'm forgetting something?
     */
-    private Integer quantity = 0;
+    //private Integer quantity = 0;
 
     @ManyToMany
     private List<Book> books;
@@ -27,11 +27,11 @@ public class Cart {
 
     //GETTERS
     public Long getId() { return cartId; }
-    public Integer getQuantity() { return quantity; }
+    //public Integer getQuantity() { return quantity; }
     public List<Book> getBooks() { return books; }
     public User getUser() { return user; }
 
     //SETTERS
-    public void setQuantity(Integer quantity) { this.quantity = quantity; }
+    //public void setQuantity(Integer quantity) { this.quantity = quantity; }
     public void setUser(User user) { this.user = user; }
 }
