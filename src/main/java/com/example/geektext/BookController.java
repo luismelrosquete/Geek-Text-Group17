@@ -3,8 +3,13 @@ package com.example.geektext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller //class is a controller (MVC)
@@ -108,6 +113,19 @@ public class BookController
 
         //failure message
         return "Failed to find top 10 books sold.";
+    }
+
+    //get a set amt of records from total record set
+    //curl localhost:8080/book/getSetOfBooks -d page= 0 -d size=5
+    //curl localhost:8080/book/getSetOfBooks?page=0 -d size=10
+    @RequestMapping (path = "/getSetOfBooks")
+    public @ResponseBody Iterable<Book> getSetOfBooks (@RequestParam Integer page, @RequestParam Integer size)
+    {
+        //get data sorted by name:
+        Pageable pageable = PageRequest.of(page, size, Sort.by("bookName"));
+
+        //output page of data:
+        return bookRepository.findAll(pageable).getContent();
     }
 
     //GET
