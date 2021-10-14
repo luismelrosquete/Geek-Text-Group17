@@ -1,6 +1,9 @@
 package com.example.geektext;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Book
@@ -19,12 +22,13 @@ public class Book
     private Integer bookCopiesSold;
     private Integer bookPrice;
 
-    //TODO: many-to-many relationship between author and book
-    //ENTITY relations
-    //@ManyToMany (targetEntity = Author.class, mappedBy = "bookId", cascade = CascadeType.ALL)
-    //private List<Author> book_author;         //needs to reference author obj/key.
+    //entity relationships
+    @ManyToMany (cascade = CascadeType.ALL)
+    @JoinTable
+    private Set<Author> bookAuthors = new HashSet<>();
 
     //GETTERS
+    public Set<Author> getBookAuthors () { return bookAuthors; }
     public String getBookIsbn()
     {
         return bookIsbn;
@@ -59,6 +63,7 @@ public class Book
     }
 
     //SETTERS
+    public void setBookAuthors (Author author) { this.bookAuthors.add(author); }
     public void setBookIsbn(String book_isbn)
     {
         this.bookIsbn = book_isbn;

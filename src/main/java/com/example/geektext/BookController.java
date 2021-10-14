@@ -13,13 +13,16 @@ public class BookController
 {
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private AuthorRepository authorRepository;
 
     //POST
-    //curl test //curl -X POST localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2
-    //curl test //curl -X POST localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2 -d description=testDesc -d publisher=testPublisher -d yearPublished=2020 -d copiesSold=15 -d price=15
+    //curl test //curl -X POST localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2 -d authorFullName="first last"
+    //curl test //curl -X POST localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2 -d authorFullName="first last" -d description=testDesc -d publisher=testPublisher -d yearPublished=2020 -d copiesSold=15 -d price=15
     @PostMapping(path = "/addBook")    //Map *only* POST requests
     public @ResponseBody
     String addBook (@RequestParam String bookIsbn, @RequestParam String name, @RequestParam String genre,
+                    @RequestParam String authorFullName,
                     @RequestParam(required = false) String description, @RequestParam(required = false) String publisher,
                     @RequestParam(required = false) Integer yearPublished, @RequestParam(required = false) Integer copiesSold,
                     @RequestParam(required = false) Integer price)
@@ -31,6 +34,12 @@ public class BookController
         book.setBookIsbn(bookIsbn);
         book.setBookName(name);
         book.setBook_genre(genre);
+
+        //get & set the author:
+        var authors = authorRepository.findByAuthorFullName(authorFullName);
+        if (authors.stream().count() == 0 || authors.get(0) == null)
+            return "Cannot find author with name: " +authorFullName;
+        book.setBookAuthors(authors.get(0));
 
         //optional fields
         if (description != null) book.setBookDescription(description);
