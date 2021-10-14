@@ -24,7 +24,8 @@ public class UserController
     @Autowired
     private CreditCardRepository creditCardRepository;
 
-    //test curl: curl localhost:8080/user/addUser -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
+    //POST
+    //test curl: curl -X POST localhost:8080/user/addUser -d userName=testUserName -d pw=pa$$w0rd -d email=email@provided.com -d fullName=FirstLast -d address=test
     //make sure to test removing optional parameters as well
     //Feature: Must be able to create a User with username(email), password and optional fields  (name, email address, home address)
     @PostMapping (path = "/addUser")    //Map *only* POST requests
@@ -52,7 +53,8 @@ public class UserController
         return "Saved user";
     }
 
-    //test curl: curl localhost:8080/user/updateUser -d userName=testUserName -d fullName = NewName
+    //PUT
+    //test curl: curl -X PUT localhost:8080/user/updateUser -d userName=testUserName -d fullName=NewName
     //Feature: Must be able to update the user and any of their fields except for mail
     @RequestMapping(path = "/updateUser")
     public @ResponseBody String updateUser (@RequestParam String userName, @RequestParam(required = false) String pw,
@@ -76,7 +78,8 @@ public class UserController
         return "Updated user";
     }
 
-    //test curl: curl localhost:8080/user/findUser -d userName=testUserName
+    //GET
+    //test curl: curl -X GET localhost:8080/user/findUser?userName=testUserName
     //Feature: Must be able to retrieve a User Object and its fields by their username
     //@GetMapping (path = "/findUser")
     @RequestMapping(path = "/findUser")
@@ -88,8 +91,8 @@ public class UserController
         return null;
     }
 
-
-    //test curl: curl localhost:8080/user/addCreditCard -d userName=testUserName -d cardNumber=0987654321211234 -d cardSecurityPin=123 -d cardExpiryMonth=10 -d cardExpiryYear=21
+    //POST
+    //test curl: curl -X POST localhost:8080/user/addCreditCard -d userName=testUserName -d cardNumber=0987654321211234 -d cardSecurityPin=123 -d cardExpiryMonth=10 -d cardExpiryYear=21
     @RequestMapping(path = "/addCreditCard")
     public @ResponseBody String addCreditCard(@RequestParam String userName, @RequestParam String cardNumber,
                                               @RequestParam int cardSecurityPin, @RequestParam int cardExpiryMonth,
@@ -107,7 +110,8 @@ public class UserController
         return "Saved Credit Card.";
     }
 
-    //test curl: curl localhost:8080/user/getCreditCards -d userName=testUserName
+    //GET
+    //test curl //curl -X GET localhost:8080/user/getCreditCards?userName=testUserName
     @RequestMapping(path = "/getCreditCards")
     public @ResponseBody String getCreditCards (@RequestParam String userName){
         List<User> users = userRepository.findByuserName(userName);
@@ -122,7 +126,8 @@ public class UserController
         return "Failed to return credit cards.";
     }
 
-    //test curl: curl localhost:8080/user/allUsers
+    //GET
+    //test curl: curl -X GET localhost:8080/user/allUsers
     @GetMapping (path = "/allUsers")
     public @ResponseBody Iterable<User> getAllUsers ()
     {
