@@ -14,6 +14,7 @@ public class BookController
     @Autowired
     private BookRepository bookRepository;
 
+    //POST
     //curl test //curl -X POST localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2
     //curl test //curl -X POST localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2 -d description=testDesc -d publisher=testPublisher -d yearPublished=2020 -d copiesSold=15 -d price=15
     @PostMapping(path = "/addBook")    //Map *only* POST requests
@@ -43,8 +44,9 @@ public class BookController
         return "Saved book";
     }
 
-    //curl test  //curl -X POST localhost:8080/book/findByGenre -d genre=genre2
-    @PostMapping (path = "/findByGenre")
+    //GET
+    //curl test  //curl -X GET localhost:8080/book/findByGenre?genre=genre2
+    @RequestMapping (path = "/findByGenre")
     public @ResponseBody String book_findbygenre (@RequestParam String genre)
     {
         List<Book> books = bookRepository.findBybookGenre (genre);
@@ -61,8 +63,9 @@ public class BookController
         return "Failed to find by genre.";
     }
 
-    //curl test  //curl -X POST localhost:8080/book/findByIsbn -d isbn=5780
-    @PostMapping (path = "/findByIsbn")
+    //GET
+    //curl test  //curl -X GET localhost:8080/book/findByIsbn?isbn=5780
+    @RequestMapping (path = "/findByIsbn")
     public @ResponseBody String book_findbyisbn (@RequestParam String isbn)
     {
         List<Book> books = bookRepository.findBybookIsbn (isbn);
@@ -79,8 +82,9 @@ public class BookController
         return "Failed to find by ISBN.";
     }
 
-    //curl test  //curl -X POST localhost:8080/book/findTop10Sold
-    @PostMapping (path = "/findTop10Sold")
+    //GET
+    //curl test  //curl -X GET localhost:8080/book/findTop10Sold
+    @RequestMapping (path = "/findTop10Sold")
     public @ResponseBody String book_findTop10byCopiesSold ()
     {
         List<Book> books = bookRepository.findTop10ByOrderByBookCopiesSoldDesc();
@@ -97,6 +101,7 @@ public class BookController
         return "Failed to find top 10 books sold.";
     }
 
+    //GET
     //curl test //curl -X GET localhost:8080/book/allBooks
     @GetMapping(path = "/allBooks")
     public @ResponseBody Iterable<Book> getAllBooks ()
