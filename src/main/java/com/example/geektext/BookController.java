@@ -1,5 +1,7 @@
 package com.example.geektext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -47,11 +49,16 @@ public class BookController
     {
         List<Book> books = bookRepository.findBybookGenre (genre);
 
-        //testing output
-        String out = "";
-        for (int i = 0; i < books.stream().count(); i++)
-            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? "\n" : "");
-        return out;
+        //JSON out:
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(books);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        //failure message
+        return "Failed to find by genre.";
     }
 
     //curl test  //curl localhost:8080/book/findByIsbn -d isbn=5780
@@ -60,11 +67,16 @@ public class BookController
     {
         List<Book> books = bookRepository.findBybookIsbn (isbn);
 
-        //testing output
-        String out = "";
-        for (int i = 0; i < books.stream().count(); i++)
-            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? "\n" : "");
-        return out;
+        //JSON out:
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(books);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        //failure message
+        return "Failed to find by ISBN.";
     }
 
     //curl test  //curl localhost:8080/book/findTop10Sold
@@ -72,19 +84,24 @@ public class BookController
     public @ResponseBody String book_findTop10byCopiesSold ()
     {
         List<Book> books = bookRepository.findTop10ByOrderByBookCopiesSoldDesc();
-        //System.out.println("Book count: "+books.stream().count());
 
-        //testing output
-        String out = "";
-        for (int i = 0; i < books.stream().count(); i++)
-            out += books.get(i).toString() + ((i+1 != books.stream().count()) ? "\n" : "");
-        return out;
+        //JSON out:
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(books);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        //failure message
+        return "Failed to find top 10 books sold.";
     }
   
     //curl test //curl localhost:8080/book/allBooks
     @GetMapping(path = "/allBooks")
     public @ResponseBody Iterable<Book> getAllBooks ()
     {
+        //returns a JSON/XML with all books
         return bookRepository.findAll();
     }
 }
