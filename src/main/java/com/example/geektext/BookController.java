@@ -14,8 +14,8 @@ public class BookController
     @Autowired
     private BookRepository bookRepository;
 
-    //curl test //curl localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2
-    //curl test //curl localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2 -d description=testDesc -d publisher=testPublisher -d yearPublished=2020 -d copiesSold=15 -d price=15
+    //curl test //curl -X POST localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2
+    //curl test //curl -X POST localhost:8080/book/addBook -d bookIsbn=5780 -d name=book4 -d genre=Genre2 -d description=testDesc -d publisher=testPublisher -d yearPublished=2020 -d copiesSold=15 -d price=15
     @PostMapping(path = "/addBook")    //Map *only* POST requests
     public @ResponseBody
     String addBook (@RequestParam String bookIsbn, @RequestParam String name, @RequestParam String genre,
@@ -43,7 +43,7 @@ public class BookController
         return "Saved book";
     }
 
-    //curl test  //curl localhost:8080/book/findByGenre -d genre=genre1
+    //curl test  //curl -X POST localhost:8080/book/findByGenre -d genre=genre2
     @PostMapping (path = "/findByGenre")
     public @ResponseBody String book_findbygenre (@RequestParam String genre)
     {
@@ -61,7 +61,7 @@ public class BookController
         return "Failed to find by genre.";
     }
 
-    //curl test  //curl localhost:8080/book/findByIsbn -d isbn=5780
+    //curl test  //curl -X POST localhost:8080/book/findByIsbn -d isbn=5780
     @PostMapping (path = "/findByIsbn")
     public @ResponseBody String book_findbyisbn (@RequestParam String isbn)
     {
@@ -79,8 +79,8 @@ public class BookController
         return "Failed to find by ISBN.";
     }
 
-    //curl test  //curl localhost:8080/book/findTop10Sold
-    @RequestMapping (path = "/findTop10Sold")
+    //curl test  //curl -X POST localhost:8080/book/findTop10Sold
+    @PostMapping (path = "/findTop10Sold")
     public @ResponseBody String book_findTop10byCopiesSold ()
     {
         List<Book> books = bookRepository.findTop10ByOrderByBookCopiesSoldDesc();
@@ -96,8 +96,8 @@ public class BookController
         //failure message
         return "Failed to find top 10 books sold.";
     }
-  
-    //curl test //curl localhost:8080/book/allBooks
+
+    //curl test //curl -X GET localhost:8080/book/allBooks
     @GetMapping(path = "/allBooks")
     public @ResponseBody Iterable<Book> getAllBooks ()
     {
