@@ -21,6 +21,7 @@ public class Book
     private Integer bookYearPublished;
     private Integer bookCopiesSold;
     private Integer bookPrice;
+    private Double bookAvgRating;
 
     //entity relationships
     @ManyToMany (cascade = CascadeType.ALL)
@@ -61,6 +62,7 @@ public class Book
     {
         return bookPrice;
     }
+    public Double getBookAvgRating() { return bookAvgRating; }
 
     //SETTERS
     public void setBookAuthors (Author author) { this.bookAuthors.add(author); }
@@ -96,6 +98,7 @@ public class Book
     {
         this.bookPrice = book_price;
     }
+    public void setBookAvgRating(Double bookAvgRating) { this.bookAvgRating = bookAvgRating; }
 
     // use this method to print the book information based on the book's ISBN. 
     @Override

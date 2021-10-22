@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ReviewsRepository extends JpaRepository<Reviews, Integer> {
 
+    //find all ratings, order by rating desc
     List<Reviews> findByOrderByRatingDesc();
 
     @Transactional
@@ -24,7 +25,6 @@ public interface ReviewsRepository extends JpaRepository<Reviews, Integer> {
     @Query(value ="SELECT AVG(rating) FROM reviews WHERE reviews.book_code = (:book_code)", nativeQuery = true)
     List<Double> pullAvg(@Param("book_code") Integer book_code);
 
-
-
-
+    //find rating
+    List<Reviews> findReviewsByBookCode (String bookCode);
 }
