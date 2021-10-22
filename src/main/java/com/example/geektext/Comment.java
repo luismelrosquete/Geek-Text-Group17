@@ -1,44 +1,64 @@
 package com.example.geektext;
 
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.sql.Date;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
 
-@Data
 @Entity
-@Table(name = "comments")
-@SequenceGenerator(name = "comment_seq_gen", sequenceName = "comment_seq", initialValue = 10, allocationSize=1)
 public class Comment {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    @NotEmpty(message = "Comment body can not be empty!")
+    @Id
+    private int id;
+    private Date createdDate;
+    private String subject;
     private String body;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    @Column(name = "creation_date", nullable = false, updatable = false)
-    private Date creationDate;
+    private int userId;
+    private int bussinessId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {
-        return "Comment{" +
-                ", body='" + body + '\'' +
-                ", creationDate=" + creationDate +
-                '}';
+        return "Comment [id=" + id + ", createdDate=" + createdDate + ", subject=" + subject + ", body=" + body
+                + ", userId=" + userId + "]";
     }
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+    public String getSubject() {
+        return subject;
+    }
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+    public String getBody() {
+        return body;
+    }
+    public void setBody(String body) {
+        this.body = body;
+    }
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    public int getBussinessId() {
+        return bussinessId;
+    }
+    public void setBussinessId(int bussinessId) {
+        this.bussinessId = bussinessId;
+    }
+
 }
