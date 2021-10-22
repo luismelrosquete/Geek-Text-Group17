@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReviewsController {
+public class ReviewController {
     @Autowired
     private ReviewsRepository reviewsRepository;
     @Autowired
@@ -22,10 +22,9 @@ public class ReviewsController {
     }
 
     public void updateAvgRating(Integer bookCode, Double rating) {
-        Book books = bookRepository.findBybookIsbn(bookCode);
-        books.
+        Book books = bookRepository.;
+        books.setAverageRating(rating);
         bookRepository.save(books);
-
     }
 
     public Double findAvg(Integer bookCode) {

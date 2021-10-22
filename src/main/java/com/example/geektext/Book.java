@@ -14,6 +14,7 @@ public class Book
     private String bookIsbn;
 
     //VARS
+    private Integer bookCode;
     private String bookName;
     private String bookDescription;
     private String bookPublisher;
@@ -21,6 +22,13 @@ public class Book
     private Integer bookYearPublished;
     private Integer bookCopiesSold;
     private Integer bookPrice;
+    private Double averageRating;
+    public Integer getBookCode() {
+        return bookCode;
+    }
+    public void setBookCode(Integer bookCode) {
+        this.bookCode = bookCode;
+    }
 
     //entity relationships
     @ManyToMany (cascade = CascadeType.ALL)
@@ -96,7 +104,9 @@ public class Book
     {
         this.bookPrice = book_price;
     }
-
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
     // use this method to print the book information based on the book's ISBN. 
     @Override
     public String toString()
