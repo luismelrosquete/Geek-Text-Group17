@@ -19,8 +19,6 @@ public class CartController {
     @Autowired
     private UserRepository userRepository;
 
-    Integer quantity = 0;
-
     //Feature: Must be able to update the shopping cart with a book.
     //test curl: curl -X POST localhost:8080/cart/updateCart -d userName=testUserName -d bookIsbn=5780
     @RequestMapping (path = "/updateCart")    //Map *only* POST requests
@@ -32,11 +30,8 @@ public class CartController {
         if(users.isEmpty()) return "Username does not exist.";
         else if(books.isEmpty()) return "Book does not exist.";
         else{
-            Cart cart = users.get(0).getCart(); //seems useless to have if not calling quantity through cart class (i.e. getQuantity)
-            //Need code that adds the book into the specific shopping cart here
-            Book book = books.get(0);
-            book.getBookIsbn();
-            quantity = quantity + 1; //does its job of incrementing quantity but could go wrong so this way of doing it might be temporary
+            Cart cart = users.get(0).getCart();
+            cart.setBooks(books.get(0));
             return "Cart has been updated";
         }
     }
@@ -74,9 +69,9 @@ public class CartController {
         //making sure a book is in the cart before removing
         else{
             Cart cart = users.get(0).getCart();
-            if(quantity <= 0) return "There are no books in your shopping cart";
+            if(cart.getBooks().size() <= 0) return "There are no books in your shopping cart";
             else{
-                quantity = quantity - 1; //decrementing the cart doesnt seem to work similarly to updateCart
+                cart.removeBook(books.get(0)); //decrementing the cart doesnt seem to work similarly to updateCart
                 //Need code that will remove the book from the specific shopping cart similar to updateCart here
                 return "Book has been removed";
             }

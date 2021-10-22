@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,8 +20,9 @@ public class Cart {
     */
     //private Integer quantity = 0;
 
-    @ManyToMany
-    private List<Book> books;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable
+    private List<Book> books = new ArrayList<>();
 
     @OneToOne  (mappedBy = "cart")
     private User user;
@@ -34,4 +36,6 @@ public class Cart {
     //SETTERS
     //public void setQuantity(Integer quantity) { this.quantity = quantity; }
     public void setUser(User user) { this.user = user; }
+    public void setBooks(Book book){ this.books.add(book);}
+    public void removeBook(Book book){ this.books.remove(book);}
 }

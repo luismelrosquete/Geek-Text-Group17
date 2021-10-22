@@ -28,7 +28,7 @@ public class Book
     private Integer bookPrice;
 
 
-    @ManyToMany
+    @ManyToMany (mappedBy = "books")
     private List<Cart> carts;
 
     //TODO: many-to-many relationship between author and book
