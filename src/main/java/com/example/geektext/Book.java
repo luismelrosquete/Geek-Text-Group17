@@ -29,6 +29,7 @@ public class Book
 
 
     @ManyToMany (mappedBy = "books")
+    @JsonBackReference
     private List<Cart> carts;
 
     //TODO: many-to-many relationship between author and book

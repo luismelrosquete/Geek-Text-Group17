@@ -22,9 +22,11 @@ public class Cart {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable
+    @JsonManagedReference
     private List<Book> books = new ArrayList<>();
 
     @OneToOne  (mappedBy = "cart")
+    @JsonBackReference
     private User user;
 
     //GETTERS

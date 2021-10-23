@@ -23,6 +23,7 @@ public class User
 
     @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn (name = "cartId", referencedColumnName = "cartId")
+    @JsonManagedReference
     private Cart cart;
 
     //GETTERS

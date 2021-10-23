@@ -27,11 +27,15 @@ public class CartController {
     {
         List<User> users = userRepository.findByuserName(userName);
         List<Book> books = bookRepository.findBybookIsbn(bookIsbn);
-        if(users.isEmpty()) return "Username does not exist.";
-        else if(books.isEmpty()) return "Book does not exist.";
-        else{
+        if(users.isEmpty() || users.get(0) == null)
+            return "Username does not exist.";
+        else if(books.isEmpty() || books.get(0) == null)
+            return "Book does not exist.";
+        else
+        {
             Cart cart = users.get(0).getCart();
             cart.setBooks(books.get(0));
+            cartRepository.save(cart);      //save cart (updating in DB)
             return "Cart has been updated";
         }
     }
@@ -54,7 +58,7 @@ public class CartController {
         }
 
         //failure message
-        return "Failed to find by genre.";
+        return "Failed to find cart.";
     }
 
     //Feature: Must be able to delete a book from the shopping cart instance for that user.
@@ -64,16 +68,21 @@ public class CartController {
     {
         List<User> users = userRepository.findByuserName(userName);
         List<Book> books = bookRepository.findBybookIsbn(bookIsbn);
-        if(users.isEmpty()) return "Username does not exist.";
-        else if(books.isEmpty()) return "Book does not exist.";
-        //making sure a book is in the cart before removing
-        else{
+        if(users.isEmpty() || users.get(0) == null)
+            return "Username does not exist.";
+        else if(books.isEmpty() || books.get(0) == null)
+            return "Book does not exist.";
+        else //making sure a book is in the cart before removing
+        {
             Cart cart = users.get(0).getCart();
-            if(cart.getBooks().size() <= 0) return "There are no books in your shopping cart";
-            else{
-                cart.removeBook(books.get(0)); //decrementing the cart doesnt seem to work similarly to updateCart
+            if (cart.getBooks().size() <= 0)
+                return "There are no books in your shopping cart";
+            else
+            {
+                cart.removeBook(books.get(0));  //decrementing the cart doesnt seem to work similarly to updateCart
+                cartRepository.save(cart);      //save cart
                 //Need code that will remove the book from the specific shopping cart similar to updateCart here
-                return "Book has been removed";
+                return "Book has been removed from cart";
             }
         }
     }
@@ -81,5 +90,8 @@ public class CartController {
     //test curl: curl localhost:8080/cart/allCarts
     //requesting allCarts gives a really weird output so I wouldn't bother testing it
     @RequestMapping (path = "/allCarts")
-    public @ResponseBody Iterable<Cart> getAllCarts () { return cartRepository.findAll(); }
+    public @ResponseBody Iterable<Cart> getAllCarts ()
+    {
+        return cartRepository.findAll();
+    }
 }
