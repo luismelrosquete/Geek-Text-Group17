@@ -58,28 +58,26 @@ public class CartController {
     }
 
     //Feature: Must be able to delete a book from the shopping cart instance for that user.
-    //test curl: curl localhost:8080/cart/deleteBook -d userName=testUserName -d bookIsbn=5780
-    @RequestMapping (path = "/deleteBook")    //Map *only* POST requests
-    public @ResponseBody String deleteBook (@RequestParam String userName, @RequestParam String bookIsbn)
+    //test curl: curl -X POST localhost:8080/cart/removeBook -d userName=testUserName -d bookIsbn=5780
+    @RequestMapping (path = "/removeBook")    //Map *only* POST requests
+    public @ResponseBody String removeBook (@RequestParam String userName, @RequestParam String bookIsbn)
     {
         List<User> users = userRepository.findByuserName(userName);
         List<Book> books = bookRepository.findBybookIsbn(bookIsbn);
         if(users.isEmpty()) return "Username does not exist.";
         else if(books.isEmpty()) return "Book does not exist.";
-        //making sure a book is in the cart before removing
         else{
             Cart cart = users.get(0).getCart();
             if(cart.getBooks().size() <= 0) return "There are no books in your shopping cart";
             else{
-                cart.removeBook(books.get(0)); //decrementing the cart doesnt seem to work similarly to updateCart
-                //Need code that will remove the book from the specific shopping cart similar to updateCart here
+                cart.removeBook(books.get(0));
                 return "Book has been removed";
             }
         }
     }
 
-    //test curl: curl localhost:8080/cart/allCarts
-    //requesting allCarts gives a really weird output so I wouldn't bother testing it
+    //test curl: curl -X GET localhost:8080/cart/allCarts
+    //cmd gives infinitely recursive text of carts, needs fixing
     @RequestMapping (path = "/allCarts")
     public @ResponseBody Iterable<Cart> getAllCarts () { return cartRepository.findAll(); }
 }
