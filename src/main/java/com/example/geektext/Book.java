@@ -1,9 +1,17 @@
 package com.example.geektext;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import java.util.List;
+
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 public class Book
@@ -22,6 +30,15 @@ public class Book
     private Integer bookCopiesSold;
     private Integer bookPrice;
 
+
+    @ManyToMany (mappedBy = "books")
+    @JsonBackReference
+    private List<Cart> carts;
+
+    //TODO: many-to-many relationship between author and book
+    //ENTITY relations
+    //@ManyToMany (targetEntity = Author.class, mappedBy = "bookId", cascade = CascadeType.ALL)
+    //private List<Author> book_author;         //needs to reference author obj/key.
     //entity relationships
     @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable
@@ -41,10 +58,7 @@ public class Book
     {
         return bookDescription;
     }
-    public String getBookPublisher()
-    {
-        return bookPublisher;
-    }
+    public String getBookPublisher() { return bookPublisher; }
     public String getBook_genre ()
     {
         return bookGenre;
@@ -61,6 +75,7 @@ public class Book
     {
         return bookPrice;
     }
+    public List<Cart> getCarts() { return carts; }
 
     //SETTERS
     public void setBookAuthors (Author author) { this.bookAuthors.add(author); }
