@@ -20,6 +20,8 @@ public class UserController
     @Autowired  //get the bean called TestRepository    //auto gen'd by spring, used to handle data
     private UserRepository userRepository;
     @Autowired
+    private CartRepository cartRepository;
+    @Autowired
     private CreditCardRepository creditCardRepository;
 
     //POST
@@ -43,7 +45,11 @@ public class UserController
             user.setUserFullName(fullName);
         if(address != null)
             user.setUserAddress(address);
+        Cart cart = new Cart();
+        user.setCart(cart);
+        cart.setUser(user);
         userRepository.save(user);
+        cartRepository.save(cart);
         return "Saved user";
     }
 
