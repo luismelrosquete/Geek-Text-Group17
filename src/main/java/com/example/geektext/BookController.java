@@ -129,6 +129,28 @@ public class BookController
         return bookRepository.findAll(pageable).getContent();
     }
 
+    //get all books of the minRating and higher
+    //curl localhost:8080/book/getBooksByRating -d minRating=4
+    @RequestMapping (path = "/getBooksByRating")
+    public @ResponseBody String getBooksOfRating (@RequestParam Double minRating)
+    {
+        //get set of books by rating
+        var books = bookRepository.findByBookAvgRatingGreaterThanEqual (minRating);
+
+        //JSON out:
+        try
+        {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(books);
+        }
+        catch (JsonProcessingException e)
+        {
+            e.printStackTrace();
+        }
+
+        //failure message
+        return "Failed to find any books of rating or higher.";
+    }
 
     //GET
     //curl test //curl -X GET localhost:8080/book/allBooks

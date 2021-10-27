@@ -15,4 +15,7 @@ public interface BookRepository extends PagingAndSortingRepository<Book, String>
 
     //finding top sellers (top 10 books that have most copies sold)
     List<Book> findTop10ByOrderByBookCopiesSoldDesc ();
+
+    //finding books by specified rating and higher
+    List<Book> findByBookAvgRatingGreaterThanEqual (Double minRating);
 }
