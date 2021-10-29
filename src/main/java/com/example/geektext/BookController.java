@@ -79,11 +79,20 @@ public class BookController
     }
 
     //GET
-    //curl test  //curl -X GET localhost:8080/book/findByAuthor?author=Luismel Rosquete
+    //curl test  //curl -X GET localhost:8080/book/findByAuthor?authorName=First+Last
+    //curl lest  //curl localhost:8080/book/findByAuthor -d authorName="First Last"
     @RequestMapping (path = "/findByAuthor")
-    public @ResponseBody String findByBookAuthor (@RequestParam String author)
+    public @ResponseBody String findByBookAuthor (@RequestParam String authorName)
     {
-        List<Book> books = bookRepository.findByBookAuthor (author);
+        //find author by name:
+        var authors = authorRepository.findByAuthorFullName(authorName);
+
+        //null/empty check
+        if (authors.size() == 0 || authors.get(0) == null)
+            return "Failed to find an author with name: \""+authorName+"\"";
+
+        //find books by author
+        List<Book> books = bookRepository.findByBookAuthors (authors.get(0));
 
         //JSON out:
         try {
@@ -94,7 +103,7 @@ public class BookController
         }
 
         //failure message
-        return "Failed to find by genre.";
+        return "Failed to find books by author.";
     }
 
     //GET

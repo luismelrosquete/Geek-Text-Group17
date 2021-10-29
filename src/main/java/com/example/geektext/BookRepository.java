@@ -14,7 +14,7 @@ public interface BookRepository extends PagingAndSortingRepository<Book, String>
     List<Book> findBybookIsbn (String bookIsbn);
 
     // finding book by author
-    List<Book> findByBookAuthor (String bookAuthors);
+    List<Book> findByBookAuthors (Author author);
 
     //finding top sellers (top 10 books that have most copies sold)
     List<Book> findTop10ByOrderByBookCopiesSoldDesc ();
