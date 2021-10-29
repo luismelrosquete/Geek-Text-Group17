@@ -79,6 +79,25 @@ public class BookController
     }
 
     //GET
+    //curl test  //curl -X GET localhost:8080/book/findByAuthor?author=Luismel Rosquete
+    @RequestMapping (path = "/findByAuthor")
+    public @ResponseBody String findByBookAuthor (@RequestParam String author)
+    {
+        List<Book> books = bookRepository.findByBookAuthor (author);
+
+        //JSON out:
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(books);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        //failure message
+        return "Failed to find by genre.";
+    }
+
+    //GET
     //curl test  //curl -X GET localhost:8080/book/findByIsbn?isbn=5780
     @RequestMapping (path = "/findByIsbn")
     public @ResponseBody String book_findbyisbn (@RequestParam String isbn)
