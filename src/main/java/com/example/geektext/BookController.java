@@ -59,6 +59,29 @@ public class BookController
         return "Saved book";
     }
 
+    //curl test  //curl -X -POST localhost:8080/book/getBookRating -d isbn=5780
+    @RequestMapping (path = "/getBookRating")
+    public @ResponseBody String book_getBookAvgRating (@RequestParam String isbn)
+    {
+        List<Book> books = bookRepository.findBybookIsbn(isbn);
+
+        if (books.stream().count() == 0)
+            return "No books found.";
+        if (books.get(0).getBookAvgRating() == null)
+            return "No ratings for this book.";
+
+        //JSON out:
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(books.get(0).getBookAvgRating().toString());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        //failure message
+        return "Failed to find books avg rating.";
+    }
+
     //GET
     //curl test  //curl -X GET localhost:8080/book/findByGenre?genre=genre2
     @RequestMapping (path = "/findByGenre")
